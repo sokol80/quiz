@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style/calculator.css" />
+
+    <title>Квиз по кухне</title>
+  </head>
+  <body>
+    <!-- Секция калькулятора/квиза: основной контейнер для всего квиза -->
+    <section class="calculator" id="calculator">
+      <div class="container calculator__container">
+        <!-- Заголовок квиза -->
+        <h2 class="calculator__title">Рассчитайте стоимость кухни</h2>
+        <!-- Подзаголовок, объясняющий цель квиза -->
+        <p class="calculator__subtitle">
+          Ответьте на несколько вопросов и узнайте предварительную стоимость
+          вашей будущей кухни
+        </p>
+
+        <!-- Основной блок вопросов квиза -->
+        <div class="questions questions__container">
+          <!-- Обертка для текущего вопроса и его вариантов ответов -->
+          <div class="questions__question-wrapper">
+            <!-- Заголовок текущего вопроса -->
+            <div class="questions__question-title">
+              <!-- Здесь будет динамически отображаться текст вопроса -->
+              <span>Какой формы будет Ваша кухня?</span>
+            </div>
+            <!-- Контейнер для вариантов ответов в виде изображений -->
+            <div class="questions__answer-images">
+              <!--
+                Каждый вариант ответа представлен элементом <label>.
+                Использование <label> с вложенным <input type="radio">
+                улучшает доступность: клик по изображению или тексту
+                автоматически выбирает соответствующий радиобаттон.
+              -->
+              <label class="questions__answer-image">
+                <!--
+                  Скрытый радиобаттон. Класс "sr-only" (screen reader only)
+                  делает его доступным для скринридеров, но невидимым визуально.
+                  name="kitchen-shape": Все радиобаттоны одного вопроса должны
+                  иметь одинаковое имя, чтобы можно было выбрать только один из них.
+                  value="straight": Уникальное значение для этого варианта ответа.
+                -->
+                <input
+                  type="radio"
+                  name="kitchen-shape"
+                  value="straight"
+                  class="sr-only"
+                />
+                <!-- Изображение, представляющее вариант ответа -->
+                <img src="/images/straight.webp" alt="Прямая кухня" />
+                <!-- Текстовое описание варианта ответа -->
+                <span>Прямая</span>
+              </label>
+              <label class="questions__answer-image">
+                <input
+                  type="radio"
+                  name="kitchen-shape"
+                  value="corner"
+                  class="sr-only"
+                />
+                <img src="/images/corner.webp" alt="Угловая кухня" />
+                <span>Угловая</span>
+              </label>
+              <label class="questions__answer-image">
+                <input
+                  type="radio"
+                  name="kitchen-shape"
+                  value="p-shaped"
+                  class="sr-only"
+                />
+                <img src="/images/u-shaped.webp" alt="П-образная кухня" />
+                <span>П-образная</span>
+              </label>
+              <label class="questions__answer-image">
+                <input
+                  type="radio"
+                  name="kitchen-shape"
+                  value="island"
+                  class="sr-only"
+                />
+                <img src="/images/island.webp" alt="Кухня с островом" />
+                <span>С островом</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Навигационная панель квиза (прогресс-бар и кнопки) -->
+          <div class="questions__navbar">
+            <!-- Контейнер для прогресс-бара -->
+            <div class="questions__navbar-progress">
+              <!-- Сам прогресс-бар. Его ширина будет меняться динамически через JS/CSS -->
+              <div class="questions__navbar-progress-bar"></div>
+            </div>
+            <!-- Контейнер для кнопок навигации -->
+            <div class="questions__navbar-buttons">
+              <!-- Кнопка "Назад" для перехода к предыдущему вопросу -->
+              <button class="questions__navbar__prev-button">Назад</button>
+              <!-- Кнопка "Далее" для перехода к следующему вопросу -->
+              <button class="questions__navbar__next-button">Далее</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Подключение Alpine.js (отложенная загрузка) -->
+    <script defer src="js/alpine.min.js"></script>
+    <!-- Подключение основного скрипта квиза -->
+    <script src="js/calculator.js"></script>
+  </body>
+</html>

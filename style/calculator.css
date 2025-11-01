@@ -1,0 +1,232 @@
+/* Общие стили для body */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f7f6;
+  display: flex;
+  justify-content: center;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+/* Стили для контейнера, чтобы ограничить ширину контента */
+.container {
+  width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+  background-color: #ffffff;
+  height: 100vh;
+}
+
+/* Стили для секции калькулятора/квиза */
+.calculator {
+  text-align: center;
+  width: 100%;
+}
+
+.calculator__title {
+  font-size: 2em;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.calculator__subtitle {
+  font-size: 1.1em;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+/* Стили для контейнера вопросов */
+.questions__container {
+  border-top: 1px #dddddd solid;
+  border-bottom: 1px #dddddd solid;
+  padding: 32px 48px;
+}
+
+.questions__question-title {
+  font-size: 1.5em;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* Стили для контейнера изображений ответов */
+.questions__answer-images {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 20px; /* Расстояние между элементами */
+  margin-bottom: 30px;
+}
+
+/* Стили для каждого варианта ответа (label) */
+.questions__answer-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e0e0e0;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  box-sizing: border-box; /* Учитываем padding и border в ширине/высоте */
+}
+
+.questions__answer-image:hover {
+  border-color: #007bff;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
+}
+
+/* Стили для выбранного варианта ответа */
+.questions__answer-image.selected {
+  border-color: #007bff;
+  background-color: #e7f3ff;
+  box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+}
+
+.questions__answer-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  margin-bottom: 10px;
+  object-fit: contain; /* Изображение будет масштабироваться, сохраняя пропорции */
+}
+
+.questions__answer-image span {
+  font-size: 1em;
+  color: #333;
+  text-align: center;
+}
+
+/* Стили для скрытого радиобаттона */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Стили для навигационной панели */
+.questions__navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 48px;
+}
+
+/* Стили для прогресс-бара */
+.questions__navbar-progress {
+  width: calc(75% - 7px);
+  background-color: #e9ecef;
+  border-radius: 5px;
+  height: 4px;
+  margin-bottom: 8px;
+  overflow: hidden; /* Чтобы прогресс-бар не выходил за границы */
+}
+
+.questions__navbar-progress-bar {
+  height: 100%;
+  width: 0%; /* Начальная ширина 0%, будет меняться через JS */
+  background-color: #007bff;
+  border-radius: 5px;
+  transition: width 0.4s ease; /* Плавное изменение ширины */
+}
+
+/* Стили для кнопок навигации */
+.questions__navbar-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.questions__navbar__prev-button {
+  background-color: transparent;
+  color: #cccccc;
+  border: 1px #cccccc solid;
+  border-radius: 9999px;
+  padding: 12px 24px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.questions__navbar__next-button {
+  background-color: #c06c5e;
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  padding: 12px 24px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.questions__navbar__prev-button:hover {
+}
+.questions__navbar__next-button:hover {
+  background-color: #ad5a4d;
+}
+
+.questions__navbar__prev-button:disabled {
+}
+.questions__navbar__next-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 600px) {
+  .calculator {
+    padding: 20px;
+  }
+
+  .calculator__title {
+    font-size: 1.5em;
+  }
+
+  .calculator__subtitle {
+    font-size: 1em;
+  }
+
+  .questions__question-title {
+    font-size: 1.2em;
+  }
+
+  .questions__answer-images {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .questions__answer-image {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+  }
+
+  .questions__answer-image img {
+    max-width: 80px;
+    max-height: 80px;
+  }
+
+  .questions__navbar-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .questions__navbar__prev-button,
+  .questions__navbar__next-button {
+    width: 100%;
+  }
+}
