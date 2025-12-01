@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style/calculator.css" />
-
     <title>Квиз по кухне</title>
   </head>
   <body>
@@ -19,88 +18,65 @@
           вашей будущей кухни
         </p>
 
-        <!-- Основной блок вопросов квиза -->
-        <div class="questions questions__container">
-          <!-- Обертка для текущего вопроса и его вариантов ответов -->
-          <div class="questions__question-wrapper">
-            <!-- Заголовок текущего вопроса -->
-            <div class="questions__question-title">
-              <!-- Здесь будет динамически отображаться текст вопроса -->
-              <span>Какой формы будет Ваша кухня?</span>
-            </div>
-            <!-- Контейнер для вариантов ответов в виде изображений -->
-            <div class="questions__answer-images">
-              <!--
-                Каждый вариант ответа представлен элементом <label>.
-                Использование <label> с вложенным <input type="radio">
-                улучшает доступность: клик по изображению или тексту
-                автоматически выбирает соответствующий радиобаттон.
-              -->
-              <label class="questions__answer-image">
-                <!--
-                  Скрытый радиобаттон. Класс "sr-only" (screen reader only)
-                  делает его доступным для скринридеров, но невидимым визуально.
-                  name="kitchen-shape": Все радиобаттоны одного вопроса должны
-                  иметь одинаковое имя, чтобы можно было выбрать только один из них.
-                  value="straight": Уникальное значение для этого варианта ответа.
-                -->
-                <input
-                  type="radio"
-                  name="kitchen-shape"
-                  value="straight"
-                  class="sr-only"
-                />
-                <!-- Изображение, представляющее вариант ответа -->
-                <img src="/images/straight.webp" alt="Прямая кухня" />
-                <!-- Текстовое описание варианта ответа -->
-                <span>Прямая</span>
-              </label>
-              <label class="questions__answer-image">
-                <input
-                  type="radio"
-                  name="kitchen-shape"
-                  value="corner"
-                  class="sr-only"
-                />
-                <img src="/images/corner.webp" alt="Угловая кухня" />
-                <span>Угловая</span>
-              </label>
-              <label class="questions__answer-image">
-                <input
-                  type="radio"
-                  name="kitchen-shape"
-                  value="p-shaped"
-                  class="sr-only"
-                />
-                <img src="/images/u-shaped.webp" alt="П-образная кухня" />
-                <span>П-образная</span>
-              </label>
-              <label class="questions__answer-image">
-                <input
-                  type="radio"
-                  name="kitchen-shape"
-                  value="island"
-                  class="sr-only"
-                />
-                <img src="/images/island.webp" alt="Кухня с островом" />
-                <span>С островом</span>
-              </label>
-            </div>
+        <!-- Основной блок вопросов квиза, инициализированный Alpine.js -->
+        <div class="questions questions__container" x-data="quiz()">
+          
+          <!-- Обертка для вопросов. Теперь она скрывается, если showResults === true -->
+          <div x-show="!showResults">
+            <!-- Добавляем анимацию перехода -->
+            <template x-if="questions[currentQuestionIndex]" x-transition="">
+              <div class="questions__question-wrapper">
+                <!-- Заголовок текущего вопроса (динамический) -->
+                <div class="questions__question-title">
+                  <span x-text="questions[currentQuestionIndex].question" />
+                </div>
+                <!-- Контейнер для вариантов ответов, генерируемых циклом -->
+                <div class="questions__answer-images">
+                  <template x-for="answer in questions[currentQuestionIndex].answers" :key="answer.value">
+                    <label class="questions__answer-image" :class="{ 'selected': questions[currentQuestionIndex].selectedAnswer === answer.value }">
+                      <input type="radio" :name="'question-' + currentQuestionIndex" :value="answer.value" x-model="questions[currentQuestionIndex].selectedAnswer" class="sr-only" />
+                      <img :src="answer.image" :alt="answer.text" />
+                      <span x-text="answer.text" />
+                    </label>
+                  </template>
+                </div>
+              </div>
+            </template>
           </div>
 
-          <!-- Навигационная панель квиза (прогресс-бар и кнопки) -->
-          <div class="questions__navbar">
+          <!-- === НОВЫЙ БЛОК: Экран результатов === -->
+          <div x-show="showResults" x-transition.opacity="">
+            <h2>Результаты</h2>
+            <p>Ваши выборы:</p>
+            <ul>
+              <template x-for="(question, index) in questions" :key="index">
+                <li>
+                  <span x-text="question.question" />:
+                  <strong x-text="question.selectedAnswer" />
+                </li>
+              </template>
+            </ul>
+            <button @click="restartQuiz()">Начать заново</button>
+          </div>
+
+          <!-- Навигационная панель. Теперь она скрывается на экране результатов -->
+          <div class="questions__navbar" x-show="!showResults">
             <!-- Контейнер для прогресс-бара -->
             <div class="questions__navbar-progress">
-              <!-- Сам прогресс-бар. Его ширина будет меняться динамически через JS/CSS -->
-              <div class="questions__navbar-progress-bar"></div>
+              <!-- Динамически меняем ширину прогресс-бара -->
+              <div class="questions__navbar-progress-bar" :style="`width: ${progress}%`"></div>
             </div>
             <!-- Контейнер для кнопок навигации -->
             <div class="questions__navbar-buttons">
-              <!-- Кнопка "Назад" для перехода к предыдущему вопросу -->
-              <button class="questions__navbar__prev-button">Назад</button>
-              <!-- Кнопка "Далее" для перехода к следующему вопросу -->
-              <button class="questions__navbar__next-button">Далее</button>
+              <!-- Кнопка "Назад" теперь может быть неактивна -->
+              <button class="questions__navbar__prev-button" @click="prevQuestion()" :disabled="currentQuestionIndex === 0">
+                Назад
+              </button>
+              <!-- Кнопка "Далее" стала умнее -->
+              <button class="questions__navbar__next-button" @click="nextQuestion()" :disabled="!questions[currentQuestionIndex]?.selectedAnswer">
+                <!-- Динамический текст на кнопке -->
+                <span x-text="currentQuestionIndex < questions.length - 1 ? 'Далее' : 'Показать результат'" />
+              </button>
             </div>
           </div>
         </div>
