@@ -27,15 +27,15 @@
                 <span x-text="questions[currentQuestionIndex].question"></span>
               </div>
               <!-- === НОВЫЙ БЛОК ДЛЯ ИЗОБРАЖЕНИЯ ВОПРОСА === -->
-              <div
-                class="question-image-container"
-                x-if="questions[currentQuestionIndex].type === 'range' && questions[currentQuestionIndex].image"
-              >
-                <img
-                  :src="questions[currentQuestionIndex].image"
-                  alt="Поясняющее изображение"
-                />
-              </div>
+              <!-- === АЛЬТЕРНАТИВНЫЙ ВАРИАНТ С x-if === -->
+              <template x-if="questions[currentQuestionIndex].image">
+                <div class="question-image-container">
+                  <img
+                    :src="questions[currentQuestionIndex].image"
+                    alt="Поясняющее изображение"
+                  />
+                </div>
+              </template>
 
               <!-- Контейнер для ответов -->
               <div>
