@@ -3,48 +3,70 @@ document.addEventListener('alpine:init', () => {
     questions: [
       {
         question: 'Какой формы будет Ваша кухня?',
+        type: 'radio',
+
         answers: [
           { text: 'Прямая', value: 'straight', image: '/images/straight.webp' },
           { text: 'Угловая', value: 'corner', image: '/images/corner.webp' },
-          { text: 'П-образная', value: 'p-shaped', image: '/images/u-shaped.webp' },
+          {
+            text: 'П-образная',
+            value: 'p-shaped',
+            image: '/images/u-shaped.webp',
+          },
           { text: 'С островом', value: 'island', image: '/images/island.webp' },
         ],
-        selectedAnswer: '' 
+        selectedAnswer: '',
       },
-      // === НОВЫЙ ВОПРОС ===
       {
-        question: 'Какой размер кухни Вы планируете?',
-        answers: [
-          { text: 'Маленькая (до 10 м²)', value: 'small', image: '/images/small-size.webp' },
-          { text: 'Средняя (10-20 м²)', value: 'medium', image: '/images/medium-size.webp' },
-          { text: 'Большая (более 20 м²)', value: 'large', image: '/images/large-size.webp' },
-        ],
-        selectedAnswer: '' 
-      }
+        question: 'Укажите общую длину желаемой кухни (в метрах)',
+        type: 'range',
+        image: '/images/long_kitchen.png',
+        min: 1,
+        max: 15,
+        step: 0.1,
+        unit: 'м',
+        selectedAnswer: 3,
+      },
+      {
+        question: 'Укажите высоту кухни (в метрах)',
+        type: 'range',
+        image: '/images/height_kitchen.webp',
+        min: 2.2,
+        max: 3.5,
+        step: 0.1,
+        unit: 'м',
+        selectedAnswer: 2.5,
+      },
     ],
-
     currentQuestionIndex: 0,
-    
-    // === НОВОЕ СВОЙСТВО: для отслеживания показа результатов ===
     showResults: false,
 
     get progress() {
-      // Покажем 100% только когда результаты видны
       if (this.showResults) return 100;
-      return ((this.currentQuestionIndex) / this.questions.length) * 100; // Изменил логику для более плавного прогресса
+      return (this.currentQuestionIndex / this.questions.length) * 100;
+    },
+
+    getAnswerText(question) {
+      if (question.type === 'range') {
+        return `${question.selectedAnswer} ${question.unit}`;
+      }
+      if (question.type === 'radio') {
+        const selected = question.answers.find(
+          (answer) => answer.value === question.selectedAnswer
+        );
+        return selected ? selected.text : 'Не выбрано';
+      }
+      return 'Нет ответа';
     },
 
     nextQuestion() {
-      // Добавим валидацию: не пускать дальше, если ответ не выбран
       if (!this.questions[this.currentQuestionIndex].selectedAnswer) {
         alert('Пожалуйста, выберите вариант ответа');
-        return; // Останавливаем выполнение функции
+        return;
       }
-      
       if (this.currentQuestionIndex < this.questions.length - 1) {
         this.currentQuestionIndex++;
       } else {
-        // Вместо alert(), просто меняем флаг
         this.showResults = true;
       }
     },
@@ -54,15 +76,14 @@ document.addEventListener('alpine:init', () => {
         this.currentQuestionIndex--;
       }
     },
-    
-    // === НОВАЯ ФУНКЦИЯ: для перезапуска квиза ===
+
     restartQuiz() {
+      // Придется сбросить ответы на начальные значения
+      this.questions[0].selectedAnswer = '';
+      this.questions[1].selectedAnswer = 3;
+      this.questions[2].selectedAnswer = 72;
       this.currentQuestionIndex = 0;
       this.showResults = false;
-      // Сбрасываем все выбранные ответы
-      this.questions.forEach(q => {
-        q.selectedAnswer = '';
-      });
-    }
+    },
   }));
 });

@@ -20,64 +20,118 @@
 
         <!-- Основной блок вопросов квиза, инициализированный Alpine.js -->
         <div class="questions questions__container" x-data="quiz()">
-          
-          <!-- Обертка для вопросов. Теперь она скрывается, если showResults === true -->
+          <!-- Блок с вопросами -->
           <div x-show="!showResults">
-            <!-- Добавляем анимацию перехода -->
-            <template x-if="questions[currentQuestionIndex]" x-transition="">
-              <div class="questions__question-wrapper">
-                <!-- Заголовок текущего вопроса (динамический) -->
-                <div class="questions__question-title">
-                  <span x-text="questions[currentQuestionIndex].question" />
-                </div>
-                <!-- Контейнер для вариантов ответов, генерируемых циклом -->
-                <div class="questions__answer-images">
-                  <template x-for="answer in questions[currentQuestionIndex].answers" :key="answer.value">
-                    <label class="questions__answer-image" :class="{ 'selected': questions[currentQuestionIndex].selectedAnswer === answer.value }">
-                      <input type="radio" :name="'question-' + currentQuestionIndex" :value="answer.value" x-model="questions[currentQuestionIndex].selectedAnswer" class="sr-only" />
-                      <img :src="answer.image" :alt="answer.text" />
-                      <span x-text="answer.text" />
-                    </label>
-                  </template>
-                </div>
+            <div class="questions__question-wrapper">
+              <div class="questions__question-title">
+                <span x-text="questions[currentQuestionIndex].question"></span>
               </div>
-            </template>
+              <!-- === НОВЫЙ БЛОК ДЛЯ ИЗОБРАЖЕНИЯ ВОПРОСА === -->
+              <div
+                class="question-image-container"
+                x-if="questions[currentQuestionIndex].type === 'range' && questions[currentQuestionIndex].image"
+              >
+                <img
+                  :src="questions[currentQuestionIndex].image"
+                  alt="Поясняющее изображение"
+                />
+              </div>
+
+              <!-- Контейнер для ответов -->
+              <div>
+                <!-- Разметка для RADIO -->
+                <template
+                  x-if="questions[currentQuestionIndex].type === 'radio'"
+                >
+                  <div class="questions__answer-images">
+                    <template
+                      x-for="answer in questions[currentQuestionIndex].answers"
+                      :key="answer.value"
+                    >
+                      <label
+                        class="questions__answer-image"
+                        :class="{ 'selected': questions[currentQuestionIndex].selectedAnswer === answer.value }"
+                      >
+                        <input
+                          type="radio"
+                          :name="'question-' + currentQuestionIndex"
+                          :value="answer.value"
+                          x-model="questions[currentQuestionIndex].selectedAnswer"
+                          class="sr-only"
+                        />
+                        <img :src="answer.image" :alt="answer.text" />
+                        <span x-text="answer.text"></span>
+                      </label>
+                    </template>
+                  </div>
+                </template>
+
+                <!-- Разметка для RANGE -->
+                <template
+                  x-if="questions[currentQuestionIndex].type === 'range'"
+                >
+                  <div class="range-slider">
+                    <input
+                      type="range"
+                      :min="questions[currentQuestionIndex].min"
+                      :max="questions[currentQuestionIndex].max"
+                      :step="questions[currentQuestionIndex].step"
+                      x-model.number="questions[currentQuestionIndex].selectedAnswer"
+                    />
+                    <div class="range-value">
+                      <span
+                        x-text="questions[currentQuestionIndex].selectedAnswer"
+                      ></span>
+                      <span
+                        x-text="questions[currentQuestionIndex].unit"
+                      ></span>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+
+            <!-- Навигационная панель -->
+            <div class="questions__navbar">
+              <div class="questions__navbar-progress">
+                <div
+                  class="questions__navbar-progress-bar"
+                  :style="`width: ${progress}%`"
+                ></div>
+              </div>
+              <div class="questions__navbar-buttons">
+                <button
+                  class="questions__navbar__prev-button"
+                  @click="prevQuestion()"
+                  :disabled="currentQuestionIndex === 0"
+                >
+                  Назад
+                </button>
+                <button
+                  class="questions__navbar__next-button"
+                  @click="nextQuestion()"
+                  :disabled="!questions[currentQuestionIndex].selectedAnswer && questions[currentQuestionIndex].type === 'radio'"
+                >
+                  <span
+                    x-text="currentQuestionIndex < questions.length - 1 ? 'Далее' : 'Результат'"
+                  ></span>
+                </button>
+              </div>
+            </div>
           </div>
 
-          <!-- === НОВЫЙ БЛОК: Экран результатов === -->
-          <div x-show="showResults" x-transition.opacity="">
+          <!-- Экран результатов -->
+          <div x-show="showResults">
             <h2>Результаты</h2>
-            <p>Ваши выборы:</p>
             <ul>
               <template x-for="(question, index) in questions" :key="index">
                 <li>
-                  <span x-text="question.question" />:
-                  <strong x-text="question.selectedAnswer" />
+                  <span x-text="question.question"></span>:
+                  <strong x-text="getAnswerText(question)"></strong>
                 </li>
               </template>
             </ul>
             <button @click="restartQuiz()">Начать заново</button>
-          </div>
-
-          <!-- Навигационная панель. Теперь она скрывается на экране результатов -->
-          <div class="questions__navbar" x-show="!showResults">
-            <!-- Контейнер для прогресс-бара -->
-            <div class="questions__navbar-progress">
-              <!-- Динамически меняем ширину прогресс-бара -->
-              <div class="questions__navbar-progress-bar" :style="`width: ${progress}%`"></div>
-            </div>
-            <!-- Контейнер для кнопок навигации -->
-            <div class="questions__navbar-buttons">
-              <!-- Кнопка "Назад" теперь может быть неактивна -->
-              <button class="questions__navbar__prev-button" @click="prevQuestion()" :disabled="currentQuestionIndex === 0">
-                Назад
-              </button>
-              <!-- Кнопка "Далее" стала умнее -->
-              <button class="questions__navbar__next-button" @click="nextQuestion()" :disabled="!questions[currentQuestionIndex]?.selectedAnswer">
-                <!-- Динамический текст на кнопке -->
-                <span x-text="currentQuestionIndex < questions.length - 1 ? 'Далее' : 'Показать результат'" />
-              </button>
-            </div>
           </div>
         </div>
       </div>
