@@ -32,7 +32,7 @@ document.addEventListener('alpine:init', () => {
       {
         question: 'Укажите высоту кухни (в метрах)',
         type: 'range',
-        image: '/images/height_kitchen.webp',
+        image: '/images/height_kitchen.png',
         min: 2.2,
         max: 3.5,
         step: 0.1,
@@ -44,13 +44,30 @@ document.addEventListener('alpine:init', () => {
       {
         question: 'Какой материал фасада предпочитаете?',
         type: 'radio',
+        customClass: 'flex-4-2',
         answers: [
-          { text: 'ЛДСП', value: 'ldsp', image: '' },
-          { text: 'МДФ в пленке ПВХ', value: 'mdf_pvc_film', image: '' },
-          { text: 'МДФ в эмали', value: 'mdf_enamel', image: '' },
-          { text: 'МДФ в пластике', value: 'mdf_plastic', image: '' },
-          { text: 'Шпон', value: 'veneer', image: '' },
-          { text: 'Массив дерева', value: 'solid_wood', image: '' },
+          { text: 'ЛДСП', value: 'ldsp', image: '/images/ldsp@2x.webp' },
+          {
+            text: 'МДФ в пленке ПВХ',
+            value: 'mdf_pvc_film',
+            image: '/images/mdf_pvc_film@2x.webp',
+          },
+          {
+            text: 'МДФ в эмали',
+            value: 'mdf_enamel',
+            image: '/images/mdf_enamel@2x.webp',
+          },
+          {
+            text: 'МДФ в пластике',
+            value: 'mdf_plastic',
+            image: '/images/mdf_plastic@2x.webp',
+          },
+          { text: 'Шпон', value: 'veneer', image: '/images/veneer@2x.webp' },
+          {
+            text: 'Массив дерева',
+            value: 'solid_wood',
+            image: '/images/solid_wood@2x.webp',
+          },
         ],
         selectedAnswer: '',
         initialValue: '', // <--- НОВОЕ ПОЛЕ

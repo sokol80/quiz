@@ -43,7 +43,10 @@
                 <template
                   x-if="questions[currentQuestionIndex].type === 'radio'"
                 >
-                  <div class="questions__answer-images">
+                  <div
+                    class="questions__answer-images"
+                    :class="questions[currentQuestionIndex].customClass"
+                  >
                     <template
                       x-for="answer in questions[currentQuestionIndex].answers"
                       :key="answer.value"
