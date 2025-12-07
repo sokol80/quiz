@@ -16,6 +16,7 @@ document.addEventListener('alpine:init', () => {
           { text: 'С островом', value: 'island', image: '/images/island.webp' },
         ],
         selectedAnswer: '',
+        initialValue: '', // <--- НОВОЕ ПОЛЕ
       },
       {
         question: 'Укажите общую длину желаемой кухни (в метрах)',
@@ -26,6 +27,7 @@ document.addEventListener('alpine:init', () => {
         step: 0.1,
         unit: 'м',
         selectedAnswer: 3,
+        initialValue: 3, // <--- НОВОЕ ПОЛЕ
       },
       {
         question: 'Укажите высоту кухни (в метрах)',
@@ -36,6 +38,22 @@ document.addEventListener('alpine:init', () => {
         step: 0.1,
         unit: 'м',
         selectedAnswer: 2.5,
+        initialValue: 2.5, // <--- НОВОЕ ПОЛЕ
+      },
+      // === НОВЫЙ ЧЕТВЕРТЫЙ ВОПРОС ===
+      {
+        question: 'Какой материал фасада предпочитаете?',
+        type: 'radio',
+        answers: [
+          { text: 'ЛДСП', value: 'ldsp', image: '' },
+          { text: 'МДФ в пленке ПВХ', value: 'mdf_pvc_film', image: '' },
+          { text: 'МДФ в эмали', value: 'mdf_enamel', image: '' },
+          { text: 'МДФ в пластике', value: 'mdf_plastic', image: '' },
+          { text: 'Шпон', value: 'veneer', image: '' },
+          { text: 'Массив дерева', value: 'solid_wood', image: '' },
+        ],
+        selectedAnswer: '',
+        initialValue: '', // <--- НОВОЕ ПОЛЕ
       },
     ],
     currentQuestionIndex: 0,
@@ -78,10 +96,10 @@ document.addEventListener('alpine:init', () => {
     },
 
     restartQuiz() {
-      // Придется сбросить ответы на начальные значения
-      this.questions[0].selectedAnswer = '';
-      this.questions[1].selectedAnswer = 3;
-      this.questions[2].selectedAnswer = 72;
+      // Перебираем все вопросы и сбрасываем selectedAnswer на их initialValue
+      this.questions.forEach((q) => {
+        q.selectedAnswer = q.initialValue;
+      });
       this.currentQuestionIndex = 0;
       this.showResults = false;
     },
