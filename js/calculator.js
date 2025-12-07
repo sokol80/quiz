@@ -44,7 +44,7 @@ document.addEventListener('alpine:init', () => {
       {
         question: 'Какой материал фасада предпочитаете?',
         type: 'radio',
-        customClass: 'flex-4-2',
+        customClass: 'layout-5-items',
         answers: [
           { text: 'ЛДСП', value: 'ldsp', image: '/images/ldsp@2x.webp' },
           {
@@ -62,7 +62,6 @@ document.addEventListener('alpine:init', () => {
             value: 'mdf_plastic',
             image: '/images/mdf_plastic@2x.webp',
           },
-          { text: 'Шпон', value: 'veneer', image: '/images/veneer@2x.webp' },
           {
             text: 'Массив дерева',
             value: 'solid_wood',
