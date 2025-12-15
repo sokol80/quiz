@@ -69,7 +69,7 @@ document.addEventListener('alpine:init', () => {
           },
         ],
         selectedAnswer: '',
-initialValue: '',
+        initialValue: '',
       },
       // === НОВЫЙ ПЯТЫЙ ВОПРОС ===
       {
@@ -77,11 +77,19 @@ initialValue: '',
         type: 'radio',
         // customClass не нужен, будет стандартное отображение
         answers: [
-          { text: 'Пластик', value: 'plastic_top', image: '' },
-          { text: 'Искусственный камень', value: 'artificial_stone', image: '' }
+          {
+            text: 'Пластик',
+            value: 'plastic_top',
+            image: '/images/plastic_top.webp',
+          },
+          {
+            text: 'Искусственный камень',
+            value: 'artificial_stone',
+            image: '/images/artificial_stone.webp',
+          },
         ],
         selectedAnswer: '',
-        initialValue: ''
+        initialValue: '',
       },
     ],
     currentQuestionIndex: 0,
