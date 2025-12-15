@@ -69,7 +69,19 @@ document.addEventListener('alpine:init', () => {
           },
         ],
         selectedAnswer: '',
-        initialValue: '', // <--- НОВОЕ ПОЛЕ
+initialValue: '',
+      },
+      // === НОВЫЙ ПЯТЫЙ ВОПРОС ===
+      {
+        question: 'Какой материал столешницы предпочитаете?',
+        type: 'radio',
+        // customClass не нужен, будет стандартное отображение
+        answers: [
+          { text: 'Пластик', value: 'plastic_top', image: '' },
+          { text: 'Искусственный камень', value: 'artificial_stone', image: '' }
+        ],
+        selectedAnswer: '',
+        initialValue: ''
       },
     ],
     currentQuestionIndex: 0,
