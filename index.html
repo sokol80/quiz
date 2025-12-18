@@ -38,60 +38,53 @@
               </template>
 
               <!-- Контейнер для ответов -->
-              <div>
-                <!-- Разметка для RADIO -->
-                <template
-                  x-if="questions[currentQuestionIndex].type === 'radio'"
-                >
-                  <div
-                    class="questions__answer-images"
-                    :class="questions[currentQuestionIndex].customClass"
-                  >
-                    <template
-                      x-for="answer in questions[currentQuestionIndex].answers"
-                      :key="answer.value"
-                    >
-                      <label
-                        class="questions__answer-image"
-                        :class="{ 'selected': questions[currentQuestionIndex].selectedAnswer === answer.value }"
-                      >
-                        <input
-                          type="radio"
-                          :name="'question-' + currentQuestionIndex"
-                          :value="answer.value"
-                          x-model="questions[currentQuestionIndex].selectedAnswer"
-                          class="sr-only"
-                        />
-                        <img :src="answer.image" :alt="answer.text" />
-                        <span x-text="answer.text"></span>
-                      </label>
-                    </template>
-                  </div>
-                </template>
 
-                <!-- Разметка для RANGE -->
-                <template
-                  x-if="questions[currentQuestionIndex].type === 'range'"
+              <!-- Разметка для RADIO -->
+              <template x-if="questions[currentQuestionIndex].type === 'radio'">
+                <div
+                  class="questions__answer-images"
+                  :class="questions[currentQuestionIndex].customClass"
                 >
-                  <div class="range-slider">
-                    <input
-                      type="range"
-                      :min="questions[currentQuestionIndex].min"
-                      :max="questions[currentQuestionIndex].max"
-                      :step="questions[currentQuestionIndex].step"
-                      x-model.number="questions[currentQuestionIndex].selectedAnswer"
-                    />
-                    <div class="range-value">
-                      <span
-                        x-text="questions[currentQuestionIndex].selectedAnswer"
-                      ></span>
-                      <span
-                        x-text="questions[currentQuestionIndex].unit"
-                      ></span>
-                    </div>
+                  <template
+                    x-for="answer in questions[currentQuestionIndex].answers"
+                    :key="answer.value"
+                  >
+                    <label
+                      class="questions__answer-image"
+                      :class="{ 'selected': questions[currentQuestionIndex].selectedAnswer === answer.value }"
+                    >
+                      <input
+                        type="radio"
+                        :name="'question-' + currentQuestionIndex"
+                        :value="answer.value"
+                        x-model="questions[currentQuestionIndex].selectedAnswer"
+                        class="sr-only"
+                      />
+                      <img :src="answer.image" :alt="answer.text" />
+                      <span x-text="answer.text"></span>
+                    </label>
+                  </template>
+                </div>
+              </template>
+
+              <!-- Разметка для RANGE -->
+              <template x-if="questions[currentQuestionIndex].type === 'range'">
+                <div class="range-slider">
+                  <input
+                    type="range"
+                    :min="questions[currentQuestionIndex].min"
+                    :max="questions[currentQuestionIndex].max"
+                    :step="questions[currentQuestionIndex].step"
+                    x-model.number="questions[currentQuestionIndex].selectedAnswer"
+                  />
+                  <div class="range-value">
+                    <span
+                      x-text="questions[currentQuestionIndex].selectedAnswer"
+                    ></span>
+                    <span x-text="questions[currentQuestionIndex].unit"></span>
                   </div>
-                </template>
-              </div>
+                </div>
+              </template>
             </div>
 
             <!-- Навигационная панель -->

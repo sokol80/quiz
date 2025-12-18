@@ -42,7 +42,6 @@ p {
 
 /* Стили для контейнера вопросов */
 .questions__container {
-  /*min-height: 500px;  Жестко задаем высоту */
   border-top: 1px #dddddd solid;
   border-bottom: 1px #dddddd solid;
   padding: 32px 48px;
@@ -52,13 +51,14 @@ p {
   height: 400px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  gap: 20px; /* Заменяет margin-bottom у дочерних элементов */
+  overflow: hidden; /* На всякий случай, чтобы ничего не вылезло */
 }
 
 .questions__question-title {
+  flex-shrink: 0; /* Заголовок займет столько места, сколько ему нужно */
   font-size: 1.5em;
   color: #333;
-  margin-bottom: 20px;
   font-weight: bold;
 }
 
@@ -68,8 +68,9 @@ p {
   flex-wrap: nowrap;
   justify-content: center;
   gap: 20px; /* Расстояние между элементами */
+  flex: 1;
+  min-height: 0; /* Позволяет сжиматься */
   margin-bottom: 30px;
-  flex-shrink: 0;
 }
 
 /* Стили для каждого варианта ответа (label) */
@@ -77,13 +78,14 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   border: 1px solid #e0e0e0;
   padding: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-sizing: border-box;
 
-  box-sizing: border-box; /* Учитываем padding и border в ширине/высоте */
+  flex: 1;
+  min-height: 0; /* ВАЖНО! */
 }
 
 .questions__answer-image:hover {
@@ -101,16 +103,17 @@ p {
 .questions__answer-image img {
   display: block;
   width: 100%;
-  height: 100%;
-  object-fit: contain;
-  margin-bottom: 10px;
+  flex: 1; /* ДОБАВИТЬ: занимает всё место */
+  min-height: 0; /* ДОБАВИТЬ */
   object-fit: contain; /* Изображение будет масштабироваться, сохраняя пропорции */
 }
 
 .questions__answer-image span {
+  flex-shrink: 0; /* ДОБАВИТЬ: не сжимается */
   font-size: 1em;
   color: #333;
   text-align: center;
+  margin-top: 8px; /* ДОБАВИТЬ: отступ от картинки */
 }
 
 /* Стили для скрытого радиобаттона */
@@ -191,67 +194,59 @@ p {
   cursor: not-allowed;
 }
 
-/* Медиа-запросы для адаптивности */
-@media (max-width: 600px) {
-  .calculator {
-    padding: 20px;
-  }
-
-  .calculator__title {
-    font-size: 1.5em;
-  }
-
-  .calculator__subtitle {
-    font-size: 1em;
-  }
-
-  .questions__question-title {
-    font-size: 1.2em;
-  }
-
-  .questions__answer-images {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .questions__answer-image {
-    width: 100%;
-    height: auto;
-    padding: 10px;
-  }
-
-  .questions__answer-image img {
-    max-width: 80px;
-    max-height: 80px;
-  }
-
-  .questions__navbar-buttons {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .questions__navbar__prev-button,
-  .questions__navbar__next-button {
-    width: 100%;
-  }
-}
 .question-image-container {
   flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 0;
+  min-height: 0; /* ВАЖНО! */
 }
 
 .question-image-container img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  height: auto;
   border-radius: 8px;
 }
 
-/* Новые стили для компоновки 5 элементов в ряд */
+/* === СПЕЦИАЛЬНЫЙ СТИЛЬ ДЛЯ 5 ЭЛЕМЕНТОВ === */
+
+/* 1. Настраиваем контейнер ряда */
+.layout-5-items {
+  /* Самое важное: отменяем растягивание карточек по высоте (stretch) */
+  align-items: center; /* Карточки встанут по центру высоты 400px */
+  /* align-items: flex-start; <--- Если хотите прижать к верху */
+}
+
+/* 2. Настраиваем саму карточку */
 .layout-5-items .questions__answer-image {
-  flex-basis: calc(20% - 16px);
+  /* Задаем ширину: 20% минус отступ (gap 20px * 4 промежутка / 5 элементов ≈ 16px) */
+  flex: 0 0 calc(20% - 16px);
+
+  /* Сбрасываем принудительную высоту */
+  height: auto;
+  min-height: 0;
+}
+
+/* 3. Настраиваем картинку внутри */
+.layout-5-items .questions__answer-image img {
+  width: 100%; /* Картинка заполняет ширину узкой карточки */
+  height: auto; /* Высота подстраивается пропорционально */
+  flex: 0 0 auto; /* Не растягиваться */
+  margin-bottom: 10px;
+}
+
+/* Обёртка, которая держит два блока в ряд */
+.layout-2-items {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+  justify-content: center;
+}
+
+.layout-2-items .questions__answer-image {
+  flex: 0 1 auto; /* Сжимаются при необходимости, но не растягиваются */
+  min-width: 200px; /* Минимальная ширина */
+  max-width: 350px; /* Максимальная ширина */
 }

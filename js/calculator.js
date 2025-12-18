@@ -75,7 +75,7 @@ document.addEventListener('alpine:init', () => {
       {
         question: 'Какой материал столешницы предпочитаете?',
         type: 'radio',
-        // customClass не нужен, будет стандартное отображение
+        customClass: 'layout-2-items',
         answers: [
           {
             text: 'Пластик',
