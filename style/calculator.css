@@ -89,15 +89,15 @@ p {
 }
 
 .questions__answer-image:hover {
-  border-color: #007bff;
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
+  border-color: #c06c5e;
+  box-shadow: 0 0 10px rgba(192, 108, 94, 0.5);
 }
 
 /* Стили для выбранного варианта ответа */
 .questions__answer-image.selected {
-  border-color: #007bff;
-  background-color: #e7f3ff;
-  box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+  border-color: #c06c5e;
+  background-color: #c06c5e1a;
+  box-shadow: 0 0 15px rgba(192, 108, 94, 0.5);
 }
 
 .questions__answer-image img {
@@ -151,7 +151,7 @@ p {
 .questions__navbar-progress-bar {
   height: 100%;
   width: 0%; /* Начальная ширина 0%, будет меняться через JS */
-  background-color: #007bff;
+  background-color: #c06c5e;
   border-radius: 5px;
   transition: width 0.4s ease; /* Плавное изменение ширины */
 }
@@ -249,4 +249,15 @@ p {
   flex: 0 1 auto; /* Сжимаются при необходимости, но не растягиваются */
   min-width: 200px; /* Минимальная ширина */
   max-width: 350px; /* Максимальная ширина */
+}
+
+/* Стили для текстового блока в лейауте на 4 элемента */
+.layout-4-items .questions__answer-image span {
+  /* Задаем минимальную высоту, чтобы зарезервировать место под 2-3 строки */
+  min-height: 3.6em; /* 1.2em * 3 строки */
+
+  /* Центрируем текст по вертикали внутри этого блока */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

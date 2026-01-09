@@ -22,7 +22,7 @@ document.addEventListener('alpine:init', () => {
         question: 'Укажите общую длину желаемой кухни (в метрах)',
         type: 'range',
         image: '/images/long_kitchen.png',
-        min: 1,
+        min: 1.5,
         max: 15,
         step: 0.1,
         unit: 'м',
@@ -86,6 +86,36 @@ document.addEventListener('alpine:init', () => {
             text: 'Искусственный камень',
             value: 'artificial_stone',
             image: '/images/artificial_stone.webp',
+          },
+        ],
+        selectedAnswer: '',
+        initialValue: '',
+      },
+      // === НОВЫЙ ШЕСТОЙ ВОПРОС ===
+      {
+        question: 'Выберите тип фурнитуры',
+        type: 'radio',
+        customClass: 'layout-4-items',
+        answers: [
+          {
+            text: 'Эконом (фурнитура без доводчиков, бюджетные механизмы)',
+            value: 'fittings_economy',
+            image: '/images/fittings_economy.webp',
+          },
+          {
+            text: 'Стандарт (комфортная фурнитура с доводчиками без излишеств)',
+            value: 'fittings_standard',
+            image: '/images/fittings_standard.webp',
+          },
+          {
+            text: 'Премиум (Европейская фурнитура)',
+            value: 'fittings_premium',
+            image: '/images/fittings_premium.webp',
+          },
+          {
+            text: 'Комбинированная (где нужно считаем премиум, где можно сэкономить, стандарт)',
+            value: 'fittings_combined',
+            image: '/images/fittings_combined.webp',
           },
         ],
         selectedAnswer: '',
