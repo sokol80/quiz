@@ -213,26 +213,22 @@ p {
 
 /* 1. Настраиваем контейнер ряда */
 .layout-5-items {
-  /* Самое важное: отменяем растягивание карточек по высоте (stretch) */
-  align-items: center; /* Карточки встанут по центру высоты 400px */
-  /* align-items: flex-start; <--- Если хотите прижать к верху */
+  align-items: center;
+  gap: 15px; /* Уменьшим гэп для 5 элементов */
 }
 
 /* 2. Настраиваем саму карточку */
 .layout-5-items .questions__answer-image {
-  /* Задаем ширину: 20% минус отступ (gap 20px * 4 промежутка / 5 элементов ≈ 16px) */
-  flex: 0 0 calc(20% - 16px);
+  flex: 1 1 0; /* Разрешаем и расти и сжиматься от базового 0 */
 
-  /* Сбрасываем принудительную высоту */
-  height: auto;
   min-height: 0;
 }
 
 /* 3. Настраиваем картинку внутри */
 .layout-5-items .questions__answer-image img {
-  width: 100%; /* Картинка заполняет ширину узкой карточки */
-  height: auto; /* Высота подстраивается пропорционально */
-  flex: 0 0 auto; /* Не растягиваться */
+  width: 100%;
+  height: auto;
+  flex: 0 0 auto;
   margin-bottom: 10px;
 }
 
@@ -246,18 +242,56 @@ p {
 }
 
 .layout-2-items .questions__answer-image {
-  flex: 0 1 auto; /* Сжимаются при необходимости, но не растягиваются */
-  min-width: 200px; /* Минимальная ширина */
-  max-width: 350px; /* Максимальная ширина */
+  flex: 0 1 auto;
+  min-width: 200px;
+  max-width: 350px;
 }
 
 /* Стили для текстового блока в лейауте на 4 элемента */
 .layout-4-items .questions__answer-image span {
-  /* Задаем минимальную высоту, чтобы зарезервировать место под 2-3 строки */
-  min-height: 3.6em; /* 1.2em * 3 строки */
-
-  /* Центрируем текст по вертикали внутри этого блока */
+  min-height: 3.6em;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Стили для Range-слайдера */
+.range-slider {
+  padding: 8px 0;
+}
+
+.range-slider input[type='range'] {
+  width: 60%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: #ddd;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}
+
+.range-slider input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #c06c5e;
+  border-radius: 50%;
+}
+
+.range-slider input[type='range']::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #c06c5e;
+  border-radius: 50%;
+  border: none;
+}
+
+.range-value {
+  font-size: 1em;
+  font-weight: bold;
+  color: #333;
+  margin-top: 8px;
+  text-align: center;
 }
