@@ -19,73 +19,82 @@
         </p>
 
         <!-- Основной блок вопросов квиза, инициализированный Alpine.js -->
-        <div class="questions questions__container" x-data="quiz()">
+        <div
+          class="questions questions__container"
+          x-data="quiz()"
+          x-init="init()"
+        >
           <!-- Блок с вопросами -->
           <div x-show="!showResults">
-            <div class="questions__question-wrapper">
-              <div class="questions__question-title">
-                <span x-text="questions[currentQuestionIndex].question"></span>
-              </div>
-              <!-- === НОВЫЙ БЛОК ДЛЯ ИЗОБРАЖЕНИЯ ВОПРОСА === -->
-              <!-- === АЛЬТЕРНАТИВНЫЙ ВАРИАНТ С x-if === -->
-              <template x-if="questions[currentQuestionIndex].image">
-                <div class="question-image-container">
-                  <img
-                    :src="questions[currentQuestionIndex].image"
-                    alt="Поясняющее изображение"
-                  />
-                </div>
-              </template>
+            <template x-for="(question, index) in questions" :key="index">
+<div
+                x-show="currentQuestionIndex === index"
+                x-transition:enter="slide-enter"
+                x-transition:enter-start="slide-enter-start"
+                x-transition:enter-end="slide-enter-end"
+                x-transition:leave="slide-leave"
+                x-transition:leave-start="slide-leave-start"
+                x-transition:leave-end="slide-leave-end"
+              >
+                <div class="questions__question-wrapper">
+                  <div class="questions__question-title">
+                    <span x-text="question.question"></span>
+                  </div>
 
-              <!-- Контейнер для ответов -->
+                  <!-- Изображение вопроса -->
+                  <template x-if="question.image">
+                    <div class="question-image-container">
+                      <img :src="question.image" alt="Поясняющее изображение" />
+                    </div>
+                  </template>
 
-              <!-- Разметка для RADIO -->
-              <template x-if="questions[currentQuestionIndex].type === 'radio'">
-                <div
-                  class="questions__answer-images"
-                  :class="questions[currentQuestionIndex].customClass"
-                >
-                  <template
-                    x-for="answer in questions[currentQuestionIndex].answers"
-                    :key="answer.value"
-                  >
-                    <label
-                      class="questions__answer-image"
-                      :class="{ 'selected': questions[currentQuestionIndex].selectedAnswer === answer.value }"
+                  <!-- RADIO -->
+                  <template x-if="question.type === 'radio'">
+                    <div
+                      class="questions__answer-images"
+                      :class="question.customClass"
                     >
+                      <template
+                        x-for="answer in question.answers"
+                        :key="answer.value"
+                      >
+                        <label
+                          class="questions__answer-image"
+                          :class="{ 'selected': question.selectedAnswer === answer.value }"
+                        >
+                          <input
+                            type="radio"
+                            :name="'question-' + index"
+                            :value="answer.value"
+                            x-model="questions[index].selectedAnswer"
+                            class="sr-only"
+                          />
+                          <img :src="answer.image" :alt="answer.text" />
+                          <span x-text="answer.text"></span>
+                        </label>
+                      </template>
+                    </div>
+                  </template>
+
+                  <!-- RANGE -->
+                  <template x-if="question.type === 'range'">
+                    <div class="range-slider">
                       <input
-                        type="radio"
-                        :name="'question-' + currentQuestionIndex"
-                        :value="answer.value"
-                        x-model="questions[currentQuestionIndex].selectedAnswer"
-                        class="sr-only"
+                        type="range"
+                        :min="question.min"
+                        :max="question.max"
+                        :step="question.step"
+                        x-model.number="questions[index].selectedAnswer"
                       />
-                      <img :src="answer.image" :alt="answer.text" />
-                      <span x-text="answer.text"></span>
-                    </label>
+                      <div class="range-value">
+                        <span x-text="question.selectedAnswer"></span>
+                        <span x-text="question.unit"></span>
+                      </div>
+                    </div>
                   </template>
                 </div>
-              </template>
-
-              <!-- Разметка для RANGE -->
-              <template x-if="questions[currentQuestionIndex].type === 'range'">
-                <div class="range-slider">
-                  <input
-                    type="range"
-                    :min="questions[currentQuestionIndex].min"
-                    :max="questions[currentQuestionIndex].max"
-                    :step="questions[currentQuestionIndex].step"
-                    x-model.number="questions[currentQuestionIndex].selectedAnswer"
-                  />
-                  <div class="range-value">
-                    <span
-                      x-text="questions[currentQuestionIndex].selectedAnswer"
-                    ></span>
-                    <span x-text="questions[currentQuestionIndex].unit"></span>
-                  </div>
-                </div>
-              </template>
-            </div>
+              </div>
+            </template>
 
             <!-- Навигационная панель -->
             <div class="questions__navbar">

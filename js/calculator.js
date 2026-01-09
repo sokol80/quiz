@@ -127,6 +127,7 @@ document.addEventListener('alpine:init', () => {
 
     get progress() {
       if (this.showResults) return 100;
+      // Просто, как и было: прогресс зависит от текущего шага
       return (this.currentQuestionIndex / this.questions.length) * 100;
     },
 

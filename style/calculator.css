@@ -220,7 +220,6 @@ p {
 /* 2. Настраиваем саму карточку */
 .layout-5-items .questions__answer-image {
   flex: 1 1 0; /* Разрешаем и расти и сжиматься от базового 0 */
-
   min-height: 0;
 }
 
@@ -294,4 +293,42 @@ p {
   color: #333;
   margin-top: 8px;
   text-align: center;
+}
+
+/* --- Стили для анимации слайдов --- */
+
+/* Родительский контейнер для слайдов */
+.questions__container > div:first-child {
+  position: relative;
+  min-height: 400px; /* Чтобы не прыгало при анимации */
+}
+
+/* Вход: элемент появляется справа и едет влево на своё место */
+.slide-enter {
+  transition: all 0.4s ease-out;
+}
+.slide-enter-start {
+  opacity: 0;
+  transform: translateX(100px);
+}
+.slide-enter-end {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Выход: элемент уезжает влево */
+.slide-leave {
+  transition: all 0.3s ease-in;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+.slide-leave-start {
+  opacity: 1;
+  transform: translateX(0);
+}
+.slide-leave-end {
+  opacity: 0;
+  transform: translateX(-100px);
 }
